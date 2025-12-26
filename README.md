@@ -1,0 +1,2 @@
+# thread-bot
+learn c++

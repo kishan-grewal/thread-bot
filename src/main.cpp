@@ -48,18 +48,16 @@ int main() {
   Vec2 c = a + b;
   Vec2 d = a - b;
   Vec2 e = a * 2.0f;
+  Vec2 f = a / 2.0f;
+  Vec2 g = a.unit();
 
   std::cout << "a + b = (" << c.x << ", " << c.y << ")" << std::endl; // (4, 6)
   std::cout << "a - b = (" << d.x << ", " << d.y << ")" << std::endl; // (2, 2)
   std::cout << "a * 2 = (" << e.x << ", " << e.y << ")" << std::endl; // (6, 8)
+  std::cout << "a / 2 = (" << f.x << ", " << f.y << ")" << std::endl; //(1.5, 2)
 
-  Vec2 f = a / 2.0f;
-  Vec2 g = a.unit();
-
-  std::cout << "a / 2 = (" << f.x << ", " << f.y << ")"
-            << std::endl; // (1.5, 2)
   std::cout << "a.unit() = (" << g.x << ", " << g.y << ")"
-            << std::endl; // (0.6, 0.8)
+            << std::endl; //(0.6, 0.8)
 
   return 0;
 }

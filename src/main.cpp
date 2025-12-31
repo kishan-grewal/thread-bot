@@ -3,7 +3,33 @@
 #include <cmath>
 #include <iostream>
 
+// WHAT IS OBSTACLE:
+// filled rectangle
+// max (5, 2)
+//     ┌────────┐
+//     │████████│
+//     │████████│
+//     └────────┘
+// min (0, 0)
+
+// WHEN TO PASS THE VARIABLE vs ITS REF
+// Primitives by value, everything else by const.&
+// "constref" is the best way to use the value, efficient and safe const . &
+
+// const
+// const int fn() const { }
+//   ^                ^
+//   │                └── "I won't modify my own members"
+//   └── "I return something you can't modify"
+// the first const is linked with the return type int, the second is linked with
+// "this"
+
+// const must be done at creation, you can't make something const later
+// the key insight being that when you pass a var into a function, you create an
+// rvalue, the var inside the function is its own entity
+
 struct Vec2 {
+  // x, y, default:, Vec2: x. y, length, unit
   float x = 0.0f;
   float y = 0.0f;
 
@@ -38,6 +64,31 @@ struct Vec2 {
     if (len == 0.0f)
       return Vec2();
     return Vec2(x / len, y / len);
+  }
+};
+
+struct Pose2D {
+  // x, y, theta, default:, Pose2D: x. y. theta,
+  float x = 0.0f;
+  float y = 0.0f;
+  float theta = 0.0f;
+
+  Pose2D() = default;
+
+  Pose2D(float x, float y, float theta) : x(x), y(y), theta(theta) {}
+};
+
+struct Obstacle {
+  // min vec2, max vec2, default:, Obstacle: min. max, contains
+  Vec2 min;
+  Vec2 max;
+
+  Obstacle() = default;
+
+  Obstacle(const Vec2 &min, const Vec2 &max) : min(min), max(max) {}
+
+  bool Contains(const Vec2 &p) const {
+    return p.x >= min.x && p.x <= max.x && p.y >= min.y && p.y <= max.y;
   }
 };
 

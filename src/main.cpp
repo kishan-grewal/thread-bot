@@ -2,6 +2,10 @@
 
 #include <cmath>
 #include <iostream>
+#include <chrono>
+#include <vector>
+#include <random>
+// use std::mt19937 its the modern better form of random
 
 // WHAT IS OBSTACLE:
 // filled rectangle
@@ -27,6 +31,8 @@
 // const must be done at creation, you can't make something const later
 // the key insight being that when you pass a var into a function, you create an
 // rvalue, the var inside the function is its own entity
+
+// pushback for primitives and even small objects, emplaceback for massive objects
 
 struct Vec2 {
   // x, y, default:, Vec2: x. y, length, unit
@@ -114,12 +120,67 @@ struct Robot {
 
 enum class ControlState { Forward, TurnLeft, TurnRight, Stop };
 
+struct SensorData {
+  // timestamp, history, default:, add_sample
+  // prev distance = history.back()
+  std::chrono::steady_clock::time_point timestamp;
+
+  std::vector<float> history;  // last N readings
+
+  SensorData() = default;
+
+  void add_sample(float d) {
+    timestamp = std::chrono::steady_clock::now();
+    history.push_back(d);
+
+    // keep only last 10 samples
+    if (history.size() > 10) {
+      history.erase(history.begin());
+    }
+  }
+};
+
+// free functions
+
+constexpr float PI = 3.14159265358979f;
+
+float deg2rad(float deg) {
+  // pi / 180
+  return deg * PI / 180.0f;
+}
+
+float rad2deg(float rad) {
+  return rad * 180.0f / PI;
+}
+
+float clamp(float value, float min, float max) {
+  if (value < min) return min;
+  if (value > max) return max;
+  return value;
+}
+
+std::mt19937& rng() {
+  static std::mt19937 gen(std::random_device{}());  // static = called once per program
+  return gen;
+}
+
+float uniform(float min, float max) {
+  std::uniform_real_distribution<float> dist(min, max);  // U(min, max)
+  return dist(rng());
+}
+
+float normal(float mean, float stddev) {  // dont shadow std in c++
+  std::normal_distribution<float> dist(mean, stddev);  // N(u, s)
+  return dist(rng());
+}
+
 // main returns error code
 int main() {
-  Obstacle wall(Vec2(0.0f, 0.0f), Vec2(5.0f, 2.0f));
+  std::cout << "45 deg = " << deg2rad(45.0f) << "rad" << std::endl;
+  std::cout << "clamp 15 to [0, 10] = " << clamp(15.0f, 0.0f, 10.0f) << std::endl;
+  float unif = uniform(0.0f, 10.0f);
+  float norm = normal(5.0f, 2.0f);
+  std::cout << "unif = " << unif << ", " << "norm = " << norm << std::endl;
 
-  std::cout << "inside: " << wall.Contains(Vec2(2.5f, 1.0f)) << std::endl;
-  std::cout << "outside: " << wall.Contains(Vec2(5.5f, 1.0f)) << std::endl;
-    
   return 0;
 }

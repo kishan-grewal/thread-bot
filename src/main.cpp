@@ -92,23 +92,34 @@ struct Obstacle {
   }
 };
 
+struct ControlCommand {
+  // linear, angular, default:, ControlCommand: linear. angular
+  float linear = 0.0f;
+  float angular = 0.0f;
+
+  ControlCommand() = default;
+
+  ControlCommand(float linear, float angular)
+      : linear(linear), angular(angular) {}
+};
+
+struct Robot {
+  // pose, linear vel, angular vel
+  Pose2D pose;
+  float linear_velocity = 0.0f;
+  float angular_velocity = 0.0f;
+
+  // no constructor needed, Pose2D has one already as does float
+};
+
+enum class ControlState { Forward, TurnLeft, TurnRight, Stop };
+
+// main returns error code
 int main() {
-  Vec2 a(3.0f, 4.0f);
-  Vec2 b(1.0f, 2.0f);
+  Obstacle wall(Vec2(0.0f, 0.0f), Vec2(5.0f, 2.0f));
 
-  Vec2 c = a + b;
-  Vec2 d = a - b;
-  Vec2 e = a * 2.0f;
-  Vec2 f = a / 2.0f;
-  Vec2 g = a.unit();
-
-  std::cout << "a + b = (" << c.x << ", " << c.y << ")" << std::endl; // (4, 6)
-  std::cout << "a - b = (" << d.x << ", " << d.y << ")" << std::endl; // (2, 2)
-  std::cout << "a * 2 = (" << e.x << ", " << e.y << ")" << std::endl; // (6, 8)
-  std::cout << "a / 2 = (" << f.x << ", " << f.y << ")" << std::endl; //(1.5, 2)
-
-  std::cout << "a.unit() = (" << g.x << ", " << g.y << ")"
-            << std::endl; //(0.6, 0.8)
-
+  std::cout << "inside: " << wall.Contains(Vec2(2.5f, 1.0f)) << std::endl;
+  std::cout << "outside: " << wall.Contains(Vec2(5.5f, 1.0f)) << std::endl;
+    
   return 0;
 }

@@ -82,8 +82,8 @@ std::optional<float> World::raycast(const Pose2D &origin, float max_range) const
 
     float ty_min, ty_max;
     if (sin_th != 0.0f) { // if not horizontal
-      float t1 = (obst.min.y - origin.y) / cos_th;
-      float t2 = (obst.max.y - origin.y) / cos_th;
+      float t1 = (obst.min.y - origin.y) / sin_th;
+      float t2 = (obst.max.y - origin.y) / sin_th;
       ty_min = std::min(t1, t2);
       ty_max = std::max(t1, t2);
     } else {

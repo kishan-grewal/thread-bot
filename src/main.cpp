@@ -26,12 +26,12 @@ int main() {
   // integrate)
 
   World world(Vec2(0.0f, 0.0f), Vec2(100.0f, 100.0f));
-  world.add_obstacle(Obstacle(Vec2(50.0f, 0.0f), Vec2(55.0f, 10.0f)));
+  world.add_obstacle(Obstacle(Vec2(50.0f, 0.0f), Vec2(60.0f, 20.0f)));
 
-  Robot robot(Pose2D(5.0f, 5.0f, 0.0f), 1.0f);
+  Robot robot(Pose2D(10.0f, 10.0f, 0.0f), 1.0f);
   float max_range = 20.0f;
 
-  float time = 50.0f;
+  float time = 200.0f;
   float dt = 0.001f;
   size_t steps = time / dt;
 
@@ -53,9 +53,9 @@ int main() {
     robot.integrate(dt, cmd);
 
     if (i % 1000 == 0) {
-      std::cout << "Step " << std::setw(6) << i << ": pos=("
+      std::cout << "Step " << std::setw(6) << i << ": pose=("
                 << std::setw(6) << std::fixed << std::setprecision(2)
-                << state.pose.x << ", " << state.pose.y << ") "
+                << state.pose.x << ", " << state.pose.y << ", " << state.pose.theta << ") "
                 << "dist=" << std::setw(6) << std::setprecision(2)
                 << display_distance << std::endl;
     }

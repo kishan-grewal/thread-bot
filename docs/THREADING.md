@@ -41,3 +41,10 @@ So every object you make of a child class creates two objects, one child and ins
 |  - (RobotWorker members)    |
 +-----------------------------+
 
+# mutable keyword
+
+mutable variables can be changed even in functions that are const (right const)
+
+void func() const {
+    my_mutable_variable += 1;
+}

@@ -146,14 +146,14 @@ struct SensorData {
 
 constexpr float PI = 3.14159265358979f;
 
-float deg2rad(float deg) {
+inline float deg2rad(float deg) {
   // pi / 180
   return deg * PI / 180.0f;
 }
 
-float rad2deg(float rad) { return rad * 180.0f / PI; }
+inline float rad2deg(float rad) { return rad * 180.0f / PI; }
 
-float clamp(float value, float min, float max) {
+inline float clamp(float value, float min, float max) {
   if (value < min)
     return min;
   if (value > max)
@@ -161,18 +161,18 @@ float clamp(float value, float min, float max) {
   return value;
 }
 
-std::mt19937 &rng() {
+inline std::mt19937 &rng() {
   static std::mt19937 gen(
       std::random_device{}()); // static = called once per program
   return gen;
 }
 
-float uniform(float min, float max) {
+inline float uniform(float min, float max) {
   std::uniform_real_distribution<float> dist(min, max); // U(min, max)
   return dist(rng());
 }
 
-float normal(float mean, float stddev) {              // dont shadow std in c++
+inline float normal(float mean, float stddev) {       // dont shadow std in c++
   std::normal_distribution<float> dist(mean, stddev); // N(u, s)
   return dist(rng());
 }

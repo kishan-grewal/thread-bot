@@ -14,13 +14,13 @@ const std::vector<Obstacle> &World::obstacles() const { return obstacles_; }
 
 bool World::is_inside(const Vec2 &p) const {
   return p.x >= world_min_.x && p.x <= world_max_.x && p.y >= world_min_.y &&
-         p.y <= world_min_.y;
+         p.y <= world_max_.y;
 }
 
 bool World::collides(const Vec2 &center, float radius) const {
   // check world bound
-  if (center.x - radius < world_min_.x || center.x + radius > world_min_.x ||
-      center.y - radius < world_min_.y || center.y + radius > world_min_.y) {
+  if (center.x - radius < world_min_.x || center.x + radius > world_max_.x ||
+      center.y - radius < world_min_.y || center.y + radius > world_max_.y) {
     return true;
   }
 
@@ -97,11 +97,11 @@ float World::raycast(const Pose2D &origin, float max_range) const {
     }
 
     // slab method, just works
-    float t_enter = std::max(tx_min, ty_min);  // max of mins
+    float t_enter = std::max(tx_min, ty_min); // max of mins
     float t_exit = std::min(tx_max, ty_max);  // min of maxes
 
     if (t_enter <= t_exit && t_enter > 0 && t_enter < closest_hit) {
-        closest_hit = t_enter;
+      closest_hit = t_enter;
     }
   }
 

@@ -19,7 +19,7 @@ void Robot::integrate(float dt, const ControlCommand &cmd) {
 
   state_.pose.theta += state_.angular_vel * dt;
   float cos_th = std::cos(state_.pose.theta);
-  float sin_th = std::cos(state_.pose.theta);
+  float sin_th = std::sin(state_.pose.theta);
 
   state_.pose.x += state_.linear_vel * cos_th * dt;
   state_.pose.y += state_.linear_vel * sin_th * dt;

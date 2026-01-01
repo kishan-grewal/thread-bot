@@ -37,8 +37,19 @@ int main() {
 
   for (size_t i = 0; i < steps; ++i) {
     const RobotState &state = robot.get_state();
+
     std::optional<float> hit = world.raycast(state.pose, max_range);
-    ControlCommand cmd = decide_control(distance);
+    ControlCommand cmd;
+    float display_distance;
+
+    if (hit) {
+      cmd = decide_control(*hit);
+      display_distance = *hit;
+    } else {
+      cmd = decide_control(max_range);
+      display_distance = -1;
+    }
+    
     robot.integrate(dt, cmd);
 
     if (i % 1000 == 0) {
@@ -46,7 +57,7 @@ int main() {
                 << std::setw(6) << std::fixed << std::setprecision(2)
                 << state.pose.x << ", " << state.pose.y << ") "
                 << "dist=" << std::setw(6) << std::setprecision(2)
-                << distance << std::endl;
+                << display_distance << std::endl;
     }
   }
 

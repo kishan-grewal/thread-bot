@@ -3,6 +3,7 @@
 #pragma once // use in all hpps
 
 #include "types.hpp"
+#include <optional>
 // Vec2, Pose2D, Obstacle, ControlCommand, Robot, SensorData
 // deg2rad, rad2deg, clamp, uniform, normal
 
@@ -28,7 +29,7 @@ public:
 
   bool is_inside(const Vec2 &p) const;
   bool collides(const Vec2 &center, float radius) const;
-  float raycast(const Pose2D &origin, float max_range) const;
+  std::optional<float> raycast(const Pose2D &origin, float max_range) const;
 
 private:
   Vec2 world_min_; // world_min_ in menu so that in the kitchen we can use it

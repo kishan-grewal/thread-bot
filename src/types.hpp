@@ -101,21 +101,21 @@ struct Obstacle {
 };
 
 struct ControlCommand {
-  // linear, angular, default:, ControlCommand: linear. angular
-  float linear = 0.0f;
-  float angular = 0.0f;
+  // linear_vel, angular_vel, default:, ControlCommand: linear_vel. angular_vel
+  float linear_vel = 0.0f;
+  float angular_vel = 0.0f;
 
   ControlCommand() = default;
 
-  ControlCommand(float linear, float angular)
-      : linear(linear), angular(angular) {}
+  ControlCommand(float linear_vel, float angular_vel)
+      : linear_vel(linear_vel), angular_vel(angular_vel) {}
 };
 
-struct Robot {
-  // pose, linear vel, angular vel
+struct RobotState {
+  // pose, linear_vel vel, angular_vel vel
   Pose2D pose;
-  float linear_velocity = 0.0f;
-  float angular_velocity = 0.0f;
+  float linear_vel = 0.0f;
+  float angular_vel = 0.0f;
 
   // no constructor needed, Pose2D has one already as does float
 };

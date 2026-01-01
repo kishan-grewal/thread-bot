@@ -50,7 +50,8 @@ bool World::collides(const Vec2 &center, float radius) const {
   return false;
 }
 
-std::optional<float> World::raycast(const Pose2D &origin, float max_range) const {
+std::optional<float> World::raycast(const Pose2D &origin,
+                                    float max_range) const {
   float cos_th = std::cos(origin.theta);
   float sin_th = std::sin(origin.theta);
 
@@ -103,7 +104,7 @@ std::optional<float> World::raycast(const Pose2D &origin, float max_range) const
 
     if (t_enter <= t_exit && t_enter > 0 && t_enter <= max_range) {
       if (!closest_hit || t_enter < *closest_hit) {
-        closest_hit = t_enter;  // sets bool to true and value to t_enter
+        closest_hit = t_enter; // sets bool to true and value to t_enter
         // std::optional = bool (no *) + value (*)
       }
     }

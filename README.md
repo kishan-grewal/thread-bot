@@ -15,7 +15,7 @@ cmake -B build -S .
 cmake --build build
 
 # run
-build/thread_bot | plot.py
+build/thread_bot | python plot.py
 ```
 
 ### const left const right

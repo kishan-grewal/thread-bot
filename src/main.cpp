@@ -2,8 +2,8 @@
 
 #include "robot.hpp"
 #include "world.hpp"
-#include <iostream>
 #include <iomanip>
+#include <iostream>
 
 ControlCommand decide_control(float distance) {
   const float SAFE_DISTANCE = 5.0f;
@@ -31,7 +31,7 @@ int main() {
   Robot robot(Pose2D(10.0f, 10.0f, 0.0f), 1.0f);
   float max_range = 20.0f;
 
-  float time = 200.0f;
+  float time = 50.0f;
   float dt = 0.001f;
   size_t steps = time / dt;
 
@@ -49,15 +49,19 @@ int main() {
       cmd = decide_control(max_range);
       display_distance = -1;
     }
-    
+
     robot.integrate(dt, cmd);
 
+    // if (i % 1000 == 0) {
+    //   std::cout << "Step " << std::setw(6) << i << ": pose=("
+    //             << std::setw(6) << std::fixed << std::setprecision(2)
+    //             << state.pose.x << ", " << state.pose.y << ", " <<
+    //             state.pose.theta << ") "
+    //             << "dist=" << std::setw(6) << std::setprecision(2)
+    //             << display_distance << std::endl;
+    // }
     if (i % 1000 == 0) {
-      std::cout << "Step " << std::setw(6) << i << ": pose=("
-                << std::setw(6) << std::fixed << std::setprecision(2)
-                << state.pose.x << ", " << state.pose.y << ", " << state.pose.theta << ") "
-                << "dist=" << std::setw(6) << std::setprecision(2)
-                << display_distance << std::endl;
+      printf("%f %f %f\n", state.pose.x, state.pose.y, display_distance);
     }
   }
 

@@ -43,7 +43,7 @@ int main() {
   robot_worker.start();
 
   // run for some amount of clock time
-  std::this_thread::sleep_for(std::chrono::milliseconds(40));
+  std::this_thread::sleep_for(std::chrono::milliseconds(2500));
 
   // stop all workers
   reporter_worker.stop();

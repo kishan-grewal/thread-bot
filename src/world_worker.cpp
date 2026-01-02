@@ -2,6 +2,9 @@
 
 #include "world_worker.hpp"
 #include "world.hpp"
+// these two are for the sleep
+#include <thread>
+#include <chrono>
 
 WorldWorker::WorldWorker(SharedContext *context, World *world, float max_range)
     : context_(context), world_(world), max_range_(max_range) {}
@@ -24,4 +27,6 @@ void WorldWorker::run_loop() {
     std::lock_guard<std::mutex> lock(context_->sensor_mutex);
     context_->sensor_data.add_sample(distance);
   }
+
+  std::this_thread::sleep_for(std::chrono::milliseconds(1));
 }

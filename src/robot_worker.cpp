@@ -2,20 +2,23 @@
 
 #include "robot_worker.hpp"
 #include "robot.hpp"
+// these two are for the sleep
+#include <thread>
+#include <chrono>
 
 RobotWorker::RobotWorker(SharedContext *context, Robot *robot, float dt)
     : context_(context), robot_(robot), dt_(dt) {}
 
 ControlCommand RobotWorker::decide_control(float distance) const {
-  const float SAFE_DISTANCE = 5.0f;
-  const float TURN_DISTANCE = 10.0f;
+  const float SAFE_DISTANCE = 10.0f;
+  const float TURN_DISTANCE = 20.0f;
 
   if (distance < SAFE_DISTANCE && distance > 0) {
-    return ControlCommand(0.0f, 2.0f);
+    return ControlCommand(0.0f, 1.0f);
   } else if (distance < TURN_DISTANCE && distance > 0) {
-    return ControlCommand(0.1f, 1.0f);
+    return ControlCommand(20.0f, 0.5f);
   } else {
-    return ControlCommand(0.5f, 0.0f);
+    return ControlCommand(40.0f, 0.0f);
   }
 }
 
@@ -39,4 +42,6 @@ void RobotWorker::run_loop() {
     // update shared context (robot state)
     context_->robot_state = robot_->get_state();
   }
+
+  std::this_thread::sleep_for(std::chrono::milliseconds(1));
 }

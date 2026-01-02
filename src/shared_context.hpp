@@ -1,5 +1,7 @@
 // src/shared_context.hpp
 
+#pragma once
+
 #include "types.hpp"
 #include <atomic>
 #include <mutex>

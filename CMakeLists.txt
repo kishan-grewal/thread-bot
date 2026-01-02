@@ -11,6 +11,7 @@ add_executable(thread_bot
     src/worker.cpp
     src/reporter_worker.cpp
     src/world_worker.cpp
+    src/robot_worker.cpp
     # pulls in matching hpps, + types.hpp + shared_context.hpp
 )
 

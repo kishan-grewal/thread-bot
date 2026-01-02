@@ -24,5 +24,12 @@ for line_in in sys.stdin:
     scatter.set_offsets(list(zip(x, y)))
     scatter.set_color(colours)
 
+# draw walls
+# rectangle coordinates
+rx = [50, 50, 60, 60, 50]
+ry = [0, 20, 20, 0, 0]
+
+ax.plot(rx, ry, color="green", linewidth=2)
+
 plt.ioff()
 plt.show()

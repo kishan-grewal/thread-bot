@@ -7,15 +7,15 @@ RobotWorker::RobotWorker(SharedContext *context, Robot *robot, float dt)
     : context_(context), robot_(robot), dt_(dt) {}
 
 ControlCommand RobotWorker::decide_control(float distance) const {
-  const float SAFE_DISTANCE = 1.0f;
-  const float TURN_DISTANCE = 5.0f;
+  const float SAFE_DISTANCE = 5.0f;
+  const float TURN_DISTANCE = 10.0f;
 
   if (distance < SAFE_DISTANCE && distance > 0) {
-    return ControlCommand(0.0f, 1.0f);
+    return ControlCommand(0.0f, 2.0f);
   } else if (distance < TURN_DISTANCE && distance > 0) {
-    return ControlCommand(0.5f, 0.5f);
+    return ControlCommand(0.1f, 1.0f);
   } else {
-    return ControlCommand(1.0f, 0.0f);
+    return ControlCommand(0.5f, 0.0f);
   }
 }
 

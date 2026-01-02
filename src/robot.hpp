@@ -19,6 +19,6 @@ public:
 private:
   RobotState state_;
   float radius_;
-  float max_linear_vel_ = 1.0f;
-  float max_angular_vel_ = 1.0f;
+  float max_linear_vel_ = 2.0f;
+  float max_angular_vel_ = 2.0f;
 };

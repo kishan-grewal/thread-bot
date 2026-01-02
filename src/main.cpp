@@ -17,25 +17,29 @@ int main() {
   // integrate)
 
   // create shared context for mutexes
-  SharedContext context;
+  //SharedContext context;
+  std::unique_ptr<SharedContext> context = std::make_unique<SharedContext>();
 
   // world and robot still live in main
-  World world(Vec2(0.0f, 0.0f), Vec2(100.0f, 100.0f));
-  world.add_obstacle(Obstacle(Vec2(50.0f, 0.0f), Vec2(60.0f, 20.0f)));
-  Robot robot(Pose2D(10.0f, 10.0f, 0.0f), 1.0f);
-  
+  //World world(Vec2(0.0f, 0.0f), Vec2(100.0f, 100.0f));
+  std::unique_ptr<World> world = std::make_unique<World>(Vec2(0.0f, 0.0f), Vec2(100.0f, 100.0f));
+  world->add_obstacle(Obstacle(Vec2(50.0f, 0.0f), Vec2(60.0f, 20.0f)));
+
+  //Robot robot(Pose2D(10.0f, 10.0f, 0.0f), 1.0f);
+  std::unique_ptr<Robot> robot = std::make_unique<Robot>(Pose2D(10.0f, 10.0f, 0.0f), 1.0f);
+
   // initialize shared context, needs starting values
-  context.robot_state = robot.get_state();
-  context.sensor_data.add_sample(-1.0f); // needs something to read
+  context->robot_state = robot->get_state();
+  context->sensor_data.add_sample(-1.0f); // needs something to read
 
   // sim params
   float dt = 0.001f;
   float max_range = 20.0f;
 
   // create workers
-  ReporterWorker reporter_worker(&context);
-  WorldWorker world_worker(&context, &world, max_range);
-  RobotWorker robot_worker(&context, &robot, dt);
+  ReporterWorker reporter_worker(context.get());
+  WorldWorker world_worker(context.get(), world.get(), max_range);
+  RobotWorker robot_worker(context.get(), robot.get(), dt);
 
   // start all workers
   reporter_worker.start();

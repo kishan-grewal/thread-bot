@@ -8,7 +8,10 @@ add_executable(thread_bot
     src/main.cpp
     src/robot.cpp
     src/world.cpp
-    # pulls in matching hpps, + types.hpp
+    src/worker.cpp
+    src/reporter_worker.cpp
+    src/world_worker.cpp
+    # pulls in matching hpps, + types.hpp + shared_context.hpp
 )
 
 find_package(Threads REQUIRED)

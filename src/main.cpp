@@ -31,6 +31,8 @@ int main() {
   Robot robot(Pose2D(10.0f, 10.0f, 0.0f), 1.0f);
   float max_range = 20.0f;
 
+  SensorData sensor_data;
+
   float time = 50.0f;
   float dt = 0.001f;
   size_t steps = time / dt;
@@ -49,6 +51,8 @@ int main() {
       cmd = decide_control(max_range);
       display_distance = -1;
     }
+
+    sensor_data.add_sample(display_distance);
 
     robot.integrate(dt, cmd);
 

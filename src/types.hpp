@@ -120,8 +120,6 @@ struct RobotState {
   // no constructor needed, Pose2D has one already as does float
 };
 
-enum class ControlState { Forward, TurnLeft, TurnRight, Stop };
-
 struct SensorData {
   // timestamp, history, default:, add_sample
   // prev distance = history.back()

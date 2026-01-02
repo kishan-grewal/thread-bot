@@ -15,9 +15,6 @@ struct SharedContext {
   mutable std::mutex sensor_mutex;
   SensorData sensor_data;
 
-  mutable std::mutex control_mutex;
-  ControlCommand control_command;
-
   // flag for ending all workers
   std::atomic<bool> shutdown_requested{false};
 

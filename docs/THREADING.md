@@ -10,7 +10,7 @@ world worker:
 
 reporter worker:
   state_mutex (read)
-  sensor_mutex (read)
+  state_mutex (write)
 
 mutex is a lock on memory you know you have to share between workers
 

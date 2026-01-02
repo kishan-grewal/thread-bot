@@ -7,12 +7,12 @@ RobotWorker::RobotWorker(SharedContext *context, Robot *robot, float dt)
     : context_(context), robot_(robot), dt_(dt) {}
 
 ControlCommand RobotWorker::decide_control(float distance) const {
-  const float SAFE_DISTANCE = 5.0f;
-  const float TURN_DISTANCE = 10.0f;
+  const float SAFE_DISTANCE = 1.0f;
+  const float TURN_DISTANCE = 5.0f;
 
-  if (distance < SAFE_DISTANCE) {
+  if (distance < SAFE_DISTANCE && distance > 0) {
     return ControlCommand(0.0f, 1.0f);
-  } else if (distance < TURN_DISTANCE) {
+  } else if (distance < TURN_DISTANCE && distance > 0) {
     return ControlCommand(0.5f, 0.5f);
   } else {
     return ControlCommand(1.0f, 0.0f);
@@ -35,7 +35,7 @@ void RobotWorker::run_loop() {
 
   // sensor mutex (write)
   {
-    std::lock_guard<std::mutex> lock(context_->sensor_mutex);
+    std::lock_guard<std::mutex> lock(context_->state_mutex);
     // update shared context (robot state)
     context_->robot_state = robot_->get_state();
   }

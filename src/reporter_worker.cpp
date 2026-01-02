@@ -2,6 +2,9 @@
 
 #include "reporter_worker.hpp"
 #include "types.hpp"
+// these two are for the sleep
+#include <thread>
+#include <chrono>
 
 ReporterWorker::ReporterWorker(SharedContext *context) : context_(context) {}
 
@@ -21,4 +24,6 @@ void ReporterWorker::run_loop() {
   }
 
   printf("%f %f %f\n", state.pose.x, state.pose.y, sensor.history.back());
+
+  std::this_thread::sleep_for(std::chrono::milliseconds(1));
 }

@@ -1,6 +1,11 @@
 # thread-bot
 learn c++
 
+## quick run
+```bash
+cmake --build build && build/thread_bot | python plot.py
+```
+
 ## how to run
 ```bash
 # create and activate virtual environment

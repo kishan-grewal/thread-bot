@@ -1,51 +1,56 @@
-# thread-bot
-learn c++
+# cpp-2d-robot-sim
 
-## quick run
-```bash
-cmake --build build && build/thread_bot | python plot.py
+Multithreaded robot simulation in C++17. A differential-drive robot navigates a 2D world with obstacles using raycasting for obstacle detection.
+
+Built to learn C++ concurrency patterns, RAII, and proper header/source separation.
+
+## Architecture
+
+Three worker threads run concurrently:
+
+| Worker | Reads | Writes | Role |
+|--------|-------|--------|------|
+| RobotWorker | sensor_mutex | state_mutex | Control loop: read sensors → decide → integrate physics |
+| WorldWorker | state_mutex | sensor_mutex | Raycast from robot pose → update sensor data |
+| ReporterWorker | state_mutex, sensor_mutex | stdout | Print pose and sensor readings for visualisation |
+
+Shared state is protected by mutexes. Each worker inherits from `WorkerBase` which handles thread lifecycle (start/stop/join) with proper RAII cleanup.
+
+![Robot Sim](media/figure_1.png)
+
+## Structure
+
+```
+thread-bot/
+├── src/
+│   ├── main.cpp              # Setup, spawn workers, sleep, shutdown
+│   ├── types.hpp             # Vec2, Pose2D, Obstacle, RobotState, SensorData
+│   ├── robot.hpp/cpp         # Differential drive physics
+│   ├── world.hpp/cpp         # Obstacles, collision, raycasting
+│   ├── worker.hpp/cpp        # Base class for threaded workers
+│   ├── shared_context.hpp    # Mutexes + shared state
+│   ├── robot_worker.hpp/cpp  # Control loop
+│   ├── world_worker.hpp/cpp  # Sensor simulation
+│   └── reporter_worker.hpp/cpp # Logging
+└── plot.py                   # Real-time matplotlib visualisation
 ```
 
-## how to run
+## Build & Run
+
 ```bash
-# create and activate virtual environment
-python3 -m venv .venv
-source .venv/bin/activate
-
-# install Python dependencies
-pip install matplotlib
-
-# configure and build
 cmake -B build -S .
 cmake --build build
-
-# run
 build/thread_bot | python plot.py
 ```
 
-### const left const right
-const int fn() const { }
-  ^                ^
-  │                └── "I won't modify my own members"
-  └── "I return something you can't modify"
+Requires Python with matplotlib for visualisation.
 
-### making variables constant
-const must be done at creation, you can't make something const later
-the key insight being that when you pass a var into a function, you create an
-rvalue, the var inside the function is its own entity
+## Key Concepts
 
-### passing into functions
-pass primitives into functions simply, pass larger objects as const . & (const reference)
+**Threading**: `std::thread`, `std::mutex`, `std::lock_guard`, `std::atomic<bool>` for shutdown signalling.
 
-### hpp free functions
-inline functions (hpp functions) should never be more than roughly 30 lines
-this only applies to free functions (not inside a struct or class)
+**RAII**: `WorkerBase` destructor calls `stop()` then `join()` - threads clean up automatically when workers go out of scope.
 
-### push_back versus emplace_back
-push_back for primitives and small objects
-emplace_back for large objects (constructs in-place)
+**Ownership**: `std::unique_ptr` for World, Robot, SharedContext. Workers receive raw pointers (non-owning).
 
-### initializer lists
-Vec2(float x, float y) : x(x), y(y) {}
-  └── faster than assignment in constructor body
-  └── direct initialization, not copy then assign
+**Const correctness**: `const&` for input parameters, `const` member functions for read-only methods, `mutable` for mutexes in const contexts.
